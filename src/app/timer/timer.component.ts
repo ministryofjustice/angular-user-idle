@@ -1,7 +1,8 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { UserIdleService } from 'angular-user-idle';
+// import { UserIdleModule } from 'angular-user-idle';
+import { UserIdleService } from '../../../projects/angular-user-idle/src/lib/angular-user-idle.service';
 
 @Component({
   selector: 'app-timer',
@@ -22,6 +23,7 @@ export class TimerComponent implements OnInit {
   private timerStartSubscription: Subscription;
   private timeoutSubscription: Subscription;
   private pingSubscription: Subscription;
+  private idleStatusChangedSubscription: Subscription;
 
   constructor(private userIdle: UserIdleService) {
   }
@@ -58,6 +60,11 @@ export class TimerComponent implements OnInit {
     this.timeoutSubscription = this.userIdle.onTimeout()
       .subscribe(() => this.timeIsUp = true);
 
+    this.idleStatusChangedSubscription = this.userIdle.onIdleStatusChanged()
+        .subscribe((idle) => {
+            console.log('timer.component -> onIdleStatusChanged -> idle: ', idle);
+        });
+
     this.pingSubscription = this.userIdle.ping$
       .subscribe(value => this.lastPing = `#${value} at ${new Date().toString()}`);
   }
@@ -67,6 +74,8 @@ export class TimerComponent implements OnInit {
     this.timerStartSubscription.unsubscribe();
     this.timeoutSubscription.unsubscribe();
     this.pingSubscription.unsubscribe();
+    this.idleStatusChangedSubscription.unsubscribe();
+
     this.isWatching = false;
     this.isTimer = false;
     this.timeIsUp = false;

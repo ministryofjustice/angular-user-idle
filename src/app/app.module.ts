@@ -7,7 +7,8 @@ MatCardModule,
 MatInputModule,
 MatBadgeModule
 } from '@angular/material';
-import { UserIdleModule } from 'angular-user-idle';
+// import { UserIdleModule } from 'angular-user-idle';
+import { UserIdleModule } from '../../projects/angular-user-idle/src/lib/angular-user-idle.module';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -31,7 +32,7 @@ import { ApiInfoComponent } from './api-info/api-info.component';
   imports: [
     BrowserModule,
     FormsModule,
-    UserIdleModule.forRoot({idle: 60, timeout: 120, ping: 60}),
+    UserIdleModule.forRoot({idle: 5, timeout: 10, ping: 60}),
     BrowserAnimationsModule,
     MatButtonModule,
     MatCardModule,

@@ -87,6 +87,7 @@ export class UserIdleService {
   startWatching() {
     if (!this.activityEvents$) {
       this.activityEvents$ = merge(
+        fromEvent(window, 'mousedown'),
         fromEvent(window, 'mousemove'),
         fromEvent(window, 'resize'),
         fromEvent(document, 'keydown')
@@ -103,8 +104,19 @@ export class UserIdleService {
     this.idleSubscription = this.idle$
       .pipe(
         bufferTime(this.idleSensitivityMillisec), // Starting point of detecting of user's inactivity
+          filter(arr => !this.isTimeout),
+          tap((events) => {
+            if (events && events.length) {
+              if (this.isInactivityTimer) {
+                this.stopTimer();
+              }
+
+              this.isIdleDetected = false;
+              this.idleDetected$.next(false);
+            }
+          }),
         filter(
-          arr => !arr.length && !this.isIdleDetected && !this.isInactivityTimer
+          arr => !arr.length && !this.isIdleDetected &&  !this.isInactivityTimer
         ),
         tap(() => {
           this.isIdleDetected = true;
@@ -123,11 +135,7 @@ export class UserIdleService {
                     })
                   )
                 )
-              ),
-              finalize(() => {
-                this.isIdleDetected = false;
-                this.idleDetected$.next(false);
-              })
+              )
             )
           )
         )
