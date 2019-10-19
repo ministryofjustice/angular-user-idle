@@ -7,8 +7,7 @@ MatCardModule,
 MatInputModule,
 MatBadgeModule
 } from '@angular/material';
-// import { UserIdleModule } from 'angular-user-idle';
-import { UserIdleModule } from '../../projects/angular-user-idle/src/lib/angular-user-idle.module';
+import { UserIdleModule } from 'angular-user-idle';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';

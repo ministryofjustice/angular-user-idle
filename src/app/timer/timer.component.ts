@@ -1,8 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
-// import { UserIdleModule } from 'angular-user-idle';
-import { UserIdleService } from '../../../projects/angular-user-idle/src/lib/angular-user-idle.service';
+import { UserIdleService } from 'angular-user-idle';
 
 @Component({
   selector: 'app-timer',
